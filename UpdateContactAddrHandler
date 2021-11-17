@@ -1,0 +1,24 @@
+//Trigger handler class to execute business logic
+
+public class UpdateContactAddrHandler {
+    Public void Invoke(List<User> usrRecord)
+    {
+        //Find the related contact of the Contact Owner.
+        Set<Id> allUserIds = new Set<Id>();
+        Map<Id,User> userMap = New Map<Id,User>();
+        List<Contact> listOfContacts = new List<Contact>();
+        for(User usr:usrRecord)
+        {
+            allUserIds.add(usr.Id);
+            userMap.put(usr.Id, usr);
+        }
+        List<Contact> allRelatedContacts = new List<Contact>();
+        allRelatedContacts = [Select id,OwnerId,MailingAddress from Contact where OwnerId =:allUserIds];
+        for(Contact ct:allRelatedContacts)
+        {
+            ct.MailingStreet = userMap.get(ct.OwnerId).Street;
+        }
+        update allRelatedContacts;
+    }
+
+}
