@@ -1,0 +1,14 @@
+trigger UpdateContactOnUserDataUpdate on User (after update) {
+
+    if (Trigger.isAfter) 
+    {
+        for( Id userId : Trigger.newMap.keySet() )
+        {
+          if( Trigger.oldMap.get( userId ).Street != Trigger.newMap.get( userId ).Street )
+          {
+              UpdateContactAddrHandler uca = new UpdateContactAddrHandler();
+              uca.Invoke(trigger.New);
+          }
+        }
+    }
+}
