@@ -1,0 +1,24 @@
+@isTest
+public class UpdateContactAddrHandlerTest {
+    @isTest
+    static User createUser(){
+        Profile p = [SELECT Id FROM Profile WHERE Name='Standard User']; 
+        User usr = new User(Alias = 'standt', Email='standarduser@testorg.com', 
+            EmailEncodingKey='UTF-8', LastName='Testing', LanguageLocaleKey='en_US', 
+            LocaleSidKey='en_US', ProfileId = p.Id, Street = 'test',
+            TimeZoneSidKey='America/Los_Angeles', UserName='Yaju@testorgYaju.com');
+        
+        insert usr;
+        return usr;
+	}
+    @isTest
+    static void updateUser()
+    {
+        Test.startTest();
+        User usrNew = createUser();
+        system.debug('Yaju-usrNew '+usrNew);
+    	usrNew.Street = 'Updated address';
+        update usrNew;
+        Test.stopTest();
+    }
+}
